@@ -26,30 +26,21 @@ export default function JsFunction() {
 		const data = getData();
 		const start = pagination.page - 1;
 		const end = start + pagination.rowsPerPage;
+		let sortedData;
 		if (type === "min") {
-			const sortedData = [...data]
-				.sort((a, b) => a.age - b.age)
-				.slice(start, end);
-			setDataSort(sortedData);
+			sortedData = [...data].sort((a, b) => a.age - b.age);
 		} else {
-			const sortedData = [...data]
-				.sort((a, b) => b.age - a.age)
-				.slice(start, end);
-			setDataSort(sortedData);
+			sortedData = [...data].sort((a, b) => b.age - a.age);
 		}
 
-		if (end > data.length) {
-			setPagination({
-				...pagination,
-				hasNext: false,
-			});
-		} else {
-			setPagination({
-				...pagination,
-				hasNext: true,
-			});
+		const paginatedData = sortedData.slice(start, end);
+		setDataSort(paginatedData);
+
+		const hasNextPage = end < sortedData.length;
+		if (pagination.hasNext !== hasNextPage) {
+			setPagination((prev) => ({...prev, hasNext: hasNextPage}));
 		}
-	}, [pagination, type]);
+	}, [pagination.hasNext, pagination.page, pagination.rowsPerPage, type]);
 
 	const nextPage = () => {
 		setPagination({
