@@ -9,7 +9,7 @@ export default function JsFunction() {
 	const [dataSort, setDataSort] = useState([]);
 	const [pagination, setPagination] = useState({
 		page: 1,
-		rowsPerPage: 10,
+		rowsPerPage: 5,
 		hasNext: true,
 	});
 
